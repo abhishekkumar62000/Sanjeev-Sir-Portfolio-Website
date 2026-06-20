@@ -15,9 +15,6 @@
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Chart.js (Optional visualization) -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         /* ==========================================================================
@@ -64,6 +61,8 @@
 
         html {
             scroll-behavior: smooth;
+            width: 100%;
+            min-width: 100%;
         }
 
         body {
@@ -73,6 +72,17 @@
             line-height: 1.7;
             font-size: 1rem;
             overflow-x: hidden;
+            width: 100%;
+            min-width: 100%;
+        }
+
+        main {
+            padding-top: 0;
+        }
+
+        section,
+        header {
+            scroll-margin-top: 100px;
         }
 
         a {
@@ -93,6 +103,33 @@
             max-width: 100%;
             height: auto;
             display: block;
+        }
+
+        .container,
+        .hero,
+        .hero-container,
+        .about-grid,
+        .project-card,
+        .timeline-content,
+        .contact-card,
+        .cert-card,
+        .skill-category,
+        .contact-form {
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        .container,
+        .about-text,
+        .info-value,
+        .project-desc,
+        .timeline-meta,
+        .cert-meta,
+        .contact-card-value,
+        .project-links a,
+        .footer-nav a {
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         /* Typography */
@@ -139,6 +176,7 @@
             max-width: var(--max-width);
             margin: 0 auto;
             padding: 0 1.5rem;
+            box-sizing: border-box;
         }
 
         section {
@@ -241,6 +279,10 @@
             align-items: center;
         }
 
+        .nav-links li {
+            list-style: none;
+        }
+
         .nav-links a {
             color: var(--color-text);
             font-weight: 500;
@@ -280,14 +322,29 @@
            HERO SECTION
            ========================================================================== */
         .hero {
-            padding-top: 120px;
-            min-height: 100vh;
+            padding-top: 100px;
+            min-height: calc(100vh - 100px);
             display: flex;
             align-items: center;
-            background-image: linear-gradient(45deg, rgba(205, 216, 238, 0.2) 25%, transparent 25%, transparent 50%, rgba(205, 216, 238, 0.2) 50%, rgba(205, 216, 238, 0.2) 75%, transparent 75%, transparent);
-            background-size: 20px 20px;
+            background: radial-gradient(circle at top left, rgba(46, 117, 182, 0.12), transparent 26%),
+                        radial-gradient(circle at 90% 20%, rgba(232, 160, 32, 0.12), transparent 18%),
+                        linear-gradient(135deg, #f8fbff 0%, #eef4fb 45%, #f7f9fd 100%);
             position: relative;
             overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            right: -20%;
+            top: 10%;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: rgba(46, 117, 182, 0.08);
+            filter: blur(40px);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .hero-pulse {
@@ -301,6 +358,18 @@
             opacity: 0.1;
         }
 
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 20% 20%, rgba(46, 117, 182, 0.14), transparent 18%),
+                              radial-gradient(circle at 75% 18%, rgba(232, 160, 32, 0.12), transparent 16%),
+                              radial-gradient(circle at 50% 70%, rgba(91, 155, 213, 0.1), transparent 25%);
+            pointer-events: none;
+            z-index: -2;
+            animation: hero-glow 10s ease-in-out infinite;
+        }
+
         .hero-pulse svg {
             width: 100%;
             height: 100%;
@@ -309,10 +378,204 @@
             animation: pulse-line 5s linear infinite;
         }
 
-        @keyframes pulse-line {
-            to {
-                stroke-dashoffset: 0;
-            }
+        .hero-photo-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 32px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 247, 252, 0.96));
+            border: 1px solid rgba(46, 117, 182, 0.12);
+            box-shadow: 0 28px 60px rgba(27, 58, 107, 0.12);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-photo-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 40px 90px rgba(27, 58, 107, 0.18);
+        }
+
+        .hero-photo-card::before,
+        .hero-photo-card::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-photo-card::before {
+            top: -40px;
+            right: -40px;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(232, 160, 32, 0.24), transparent 60%);
+            filter: blur(16px);
+        }
+
+        .hero-photo-card::after {
+            bottom: -30px;
+            left: -30px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(46, 117, 182, 0.2), transparent 60%);
+            filter: blur(18px);
+        }
+
+        .hero-photo-card img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            border-radius: 28px;
+            transition: transform 0.5s ease;
+        }
+
+        .hero-photo-card:hover img {
+            transform: scale(1.02);
+        }
+
+        .hero-photo-meta {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            align-items: flex-end;
+            padding: 0;
+            text-align: right;
+        }
+
+        .hero-photo-card-label {
+            position: relative;
+            padding: 0.55rem 0.95rem;
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(46, 117, 182, 0.95), rgba(232, 160, 32, 0.95));
+            color: white;
+            font-size: 0.88rem;
+            font-weight: 700;
+            box-shadow: 0 16px 30px rgba(27, 58, 107, 0.18);
+            backdrop-filter: blur(12px);
+            max-width: max-content;
+        }
+
+        .hero-photo-caption {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(46, 117, 182, 0.95), rgba(232, 160, 32, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: white;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            box-shadow: 0 14px 24px rgba(27, 58, 107, 0.14);
+            backdrop-filter: blur(12px);
+            max-width: 100%;
+        }
+
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+            transform: scale(0);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .btn-primary:hover::after {
+            transform: scale(3);
+            opacity: 0.12;
+        }
+
+        .hero-social a {
+            transition: transform 0.35s ease, background 0.35s ease, color 0.35s ease;
+        }
+
+        .hero-social a:hover {
+            transform: translateY(-4px) scale(1.05);
+        }
+
+        .project-card,
+        .cert-card,
+        .contact-card {
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+
+        .project-card:hover,
+        .cert-card:hover,
+        .contact-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 22px 45px rgba(27, 58, 107, 0.16);
+            border-color: rgba(46, 117, 182, 0.15);
+        }
+
+        .hero-stats .stat-pill {
+            animation: stat-pop 0.6s ease both;
+        }
+
+        .hero-stats .stat-pill:nth-child(1) { animation-delay: 0.2s; }
+        .hero-stats .stat-pill:nth-child(2) { animation-delay: 0.3s; }
+        .hero-stats .stat-pill:nth-child(3) { animation-delay: 0.4s; }
+
+        .typewriter-wrapper {
+            animation: typewriter-fade 1.5s ease forwards;
+        }
+
+        .skills-container .skill-bar-wrap {
+            transform: translateY(20px);
+            opacity: 0;
+            animation: bar-drop 0.8s ease forwards;
+        }
+
+        .skills-container .skill-bar-wrap:nth-child(1) { animation-delay: 0.2s; }
+        .skills-container .skill-bar-wrap:nth-child(2) { animation-delay: 0.3s; }
+        .skills-container .skill-bar-wrap:nth-child(3) { animation-delay: 0.4s; }
+        .skills-container .skill-bar-wrap:nth-child(4) { animation-delay: 0.5s; }
+        .skills-container .skill-bar-wrap:nth-child(5) { animation-delay: 0.6s; }
+        .skills-container .skill-bar-wrap:nth-child(6) { animation-delay: 0.7s; }
+        .skills-container .skill-bar-wrap:nth-child(7) { animation-delay: 0.8s; }
+        .skills-container .skill-bar-wrap:nth-child(8) { animation-delay: 0.9s; }
+        .skills-container .skill-bar-wrap:nth-child(9) { animation-delay: 1s; }
+
+        @keyframes hero-glow {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-10px, 8px) scale(1.02); }
+        }
+
+        @keyframes tilt {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+
+        @keyframes heading-glow {
+            0%, 100% { text-shadow: 0 0 0 rgba(46, 117, 182, 0.1); }
+            50% { text-shadow: 0 12px 30px rgba(46, 117, 182, 0.22); }
+        }
+
+        @keyframes stat-pop {
+            0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes typewriter-fade {
+            0% { opacity: 0; transform: translateY(8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bar-drop {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .hero-container {
@@ -346,6 +609,7 @@
             line-height: 1.1;
             margin-bottom: 1rem;
             color: var(--color-primary);
+            animation: heading-glow 8s ease-in-out infinite;
         }
 
         .typewriter-wrapper {
@@ -390,6 +654,7 @@
             display: flex;
             gap: 1rem;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .hero-social {
@@ -421,20 +686,9 @@
             position: relative;
         }
 
-        .dashboard-mockup {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--color-border);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            box-shadow: 0 20px 40px rgba(27, 58, 107, 0.1);
-            position: relative;
-            animation: float 6s ease-in-out infinite;
-        }
-
         @keyframes float {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+            50% { transform: translateY(-12px); }
             100% { transform: translateY(0px); }
         }
 
@@ -1319,7 +1573,11 @@
             }
             .hero-visual {
                 order: 1;
-                max-width: 400px;
+                max-width: 420px;
+                margin: 0 auto;
+            }
+            .hero-photo-card {
+                max-width: 520px;
                 margin: 0 auto;
             }
             .hero-social {
@@ -1353,21 +1611,77 @@
                 background: var(--color-surface);
                 flex-direction: column;
                 justify-content: center;
-                transition: 0.4s ease-in-out;
+                align-items: center;
+                gap: 1.25rem;
+                padding: 2rem 1.5rem;
+                transition: left 0.4s ease-in-out;
             }
             .nav-links.active {
                 left: 0;
             }
-            .timeline::before {
-                left: 10px;
+            .nav-links li {
+                width: 100%;
+                text-align: center;
             }
-            .timeline-node {
-                left: 2px;
+            .nav-links li a {
+                width: 100%;
+                display: inline-flex;
+                justify-content: center;
+                padding: 0.75rem 1rem;
+                border-radius: 10px;
+                background: var(--color-surface-alt);
             }
-            .timeline-item {
-                padding-left: 40px;
+            .hero {
+                padding-top: 100px;
+                min-height: auto;
+                padding-bottom: 3rem;
+            }
+            .hero-container {
+                flex-direction: column-reverse;
+                align-items: center;
+                width: 100%;
+                gap: 1.5rem;
+            }
+            .hero-content,
+            .hero-visual,
+            .hero-photo-card,
+            .hero-pulse {
+                flex: 1 1 100%;
+                width: 100%;
+                max-width: 100%;
+                min-width: 0;
+            }
+            .hero-pulse {
+                left: 0;
+                overflow: hidden;
+            }
+            .hero-content {
+                order: 2;
+                text-align: center;
+            }
+            .hero-visual {
+                order: 1;
+                max-width: 100%;
+                margin: 0 auto 2rem;
+            }
+            .hero-photo-card {
+                width: 100%;
+            }
+            .hero-social {
+                justify-content: center;
+                margin-left: 0;
+            }
+            .hero-actions {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .eyebrow {
+                margin: 0 auto 1.5rem;
             }
             .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .projects-grid {
                 grid-template-columns: 1fr;
             }
             .contact-card {
@@ -1386,6 +1700,25 @@
         @media (max-width: 480px) {
             :root {
                 --section-padding: 3rem 1.5rem;
+            }
+            html,
+            body,
+            .hero,
+            .container,
+            .hero-container,
+            .about-grid,
+            .skills-container,
+            .edu-grid,
+            .contact-grid,
+            .projects-grid,
+            .timeline,
+            .stats-grid {
+                width: 100%;
+                min-width: 0;
+            }
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
             }
             .hero-name {
                 font-size: 2.5rem;
@@ -1422,11 +1755,13 @@
                 <li><a href="#contact" class="nav-link">Contact</a></li>
                 <li><a href="Sanjeev_Kumar_ATS_Resume%20(1).docx" class="btn btn-outline" download aria-label="Download Resume">Download Resume</a></li>
             </ul>
-            <button class="hamburger" id="hamburger" aria-label="Toggle Navigation">
+            <button class="hamburger" id="hamburger" aria-label="Toggle Navigation" aria-expanded="false">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </nav>
+
+    <main>
 
     <!-- 2. HERO SECTION -->
     <header id="home" class="hero">
@@ -1460,37 +1795,18 @@
                     <a href="#contact" class="btn btn-outline">Contact Me</a>
                     <div class="hero-social">
                         <a href="https://www.linkedin.com/in/sanjeev-kumar-b3920957?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="https://github.com/sanjeevkumar" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="https://github.com/sanjeevKumar23-web" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
                         <a href="mailto:snjvkumar23@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
                     </div>
                 </div>
             </div>
 
             <div class="hero-visual reveal">
-                <div class="dashboard-mockup">
-                    <div class="floating-badge">Power BI • Tableau • Python</div>
-                    <div class="dashboard-header">
-                        <div style="font-weight:700; color:var(--color-primary);">Analytics Overview</div>
-                        <i class="fas fa-ellipsis-h" style="color:var(--color-text-muted);"></i>
-                    </div>
-                    <div class="chart-placeholder">
-                        <div class="chart-bar" style="height: 40%;"></div>
-                        <div class="chart-bar" style="height: 60%;"></div>
-                        <div class="chart-bar" style="height: 30%;"></div>
-                        <div class="chart-bar" style="height: 80%;"></div>
-                        <div class="chart-bar" style="height: 50%;"></div>
-                        <div class="chart-bar" style="height: 90%;"></div>
-                        <div class="chart-bar" style="height: 100%;"></div>
-                    </div>
-                    <div class="kpi-grid">
-                        <div class="kpi-card">
-                            <div class="kpi-value">98%</div>
-                            <div class="kpi-label">SLA Rate</div>
-                        </div>
-                        <div class="kpi-card">
-                            <div class="kpi-value">30%</div>
-                            <div class="kpi-label">Efficiency ↑</div>
-                        </div>
+                <div class="hero-photo-card">
+                    <img src="SanjeevSir.jpeg" alt="Sanjeev Kumar professional portrait">
+                    <div class="hero-photo-meta">
+                        <span class="hero-photo-card-label">Senior Data Analyst</span>
+                        <span class="hero-photo-caption">IT Assistant Professor</span>
                     </div>
                 </div>
             </div>
@@ -2087,16 +2403,16 @@
                 <div class="contact-form reveal" style="transition-delay: 0.2s;">
                     <form id="contactForm" onsubmit="event.preventDefault(); submitForm();">
                         <div class="form-group">
-                            <label class="form-label">Name</label>
-                            <input type="text" class="form-control" required placeholder="Your full name">
+                            <label class="form-label" for="contact-name">Name</label>
+                            <input id="contact-name" type="text" class="form-control" required placeholder="Your full name">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" required placeholder="Your email address">
+                            <label class="form-label" for="contact-email">Email</label>
+                            <input id="contact-email" type="email" class="form-control" required placeholder="Your email address">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Subject</label>
-                            <select class="form-control" required>
+                            <label class="form-label" for="contact-subject">Subject</label>
+                            <select id="contact-subject" class="form-control" required>
                                 <option value="" disabled selected>Select an option</option>
                                 <option value="Consulting">Analytics Consulting</option>
                                 <option value="Teaching">Teaching Opportunity</option>
@@ -2105,8 +2421,8 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Message</label>
-                            <textarea class="form-control" required minlength="20" placeholder="Tell me about your project or inquiry..."></textarea>
+                            <label class="form-label" for="contact-message">Message</label>
+                            <textarea id="contact-message" class="form-control" required minlength="20" placeholder="Tell me about your project or inquiry..."></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message <i class="fas fa-paper-plane"></i></button>
                         <div id="form-message">Message sent! I'll respond within 24 hours.</div>
@@ -2115,6 +2431,8 @@
             </div>
         </div>
     </section>
+
+    </main>
 
     <!-- 10. FOOTER -->
     <footer>
@@ -2132,7 +2450,7 @@
                 </div>
                 <div class="footer-social">
                     <a href="https://www.linkedin.com/in/sanjeev-kumar-b3920957?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://github.com/sanjeevkumar" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://github.com/sanjeevKumar23-web" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
                     <a href="mailto:snjvkumar23@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
                 </div>
             </div>
@@ -2150,26 +2468,36 @@
         // 1. Mobile Menu Toggle
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('nav-links');
-        const navItems = document.querySelectorAll('.nav-link');
+        const navItems = navLinks.querySelectorAll('a');
+
+        function closeMobileMenu() {
+            navLinks.classList.remove('active');
+            const icon = hamburger.querySelector('i');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+            hamburger.setAttribute('aria-expanded', 'false');
+        }
 
         hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+            const isOpen = navLinks.classList.toggle('active');
             const icon = hamburger.querySelector('i');
-            if (navLinks.classList.contains('active')) {
+            if (isOpen) {
                 icon.classList.remove('fa-bars');
                 icon.classList.add('fa-times');
+                hamburger.setAttribute('aria-expanded', 'true');
             } else {
                 icon.classList.remove('fa-times');
                 icon.classList.add('fa-bars');
+                hamburger.setAttribute('aria-expanded', 'false');
             }
         });
 
-        // Close menu when a link is clicked
+        // Close menu when any link is clicked
         navItems.forEach(item => {
             item.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                hamburger.querySelector('i').classList.remove('fa-times');
-                hamburger.querySelector('i').classList.add('fa-bars');
+                if (navLinks.classList.contains('active')) {
+                    closeMobileMenu();
+                }
             });
         });
 
